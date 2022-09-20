@@ -4,9 +4,12 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        '1060px': {'max':'1060px'},
-        '1400px': {'max':'1400px'},
-        '670px': {'max': '670px'}
+        '470px': {'max': '470px'},
+        'Max670px': {'max': "670px"},
+        'Max370px': {'max': "370px"},
+        'MaxXl': {'max': '1280px'},
+        'MaxLg': {'max': '1024px'},
+        'MaxSm': {'max': '700px'},
       },
     },
   },

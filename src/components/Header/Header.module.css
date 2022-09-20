@@ -1,5 +1,5 @@
 .btn {
-  @apply bg-white text-purple-900 font-bold rounded-md py-1.5 px-4 border-[3px] border-white hover:border-yellow-400 hover:text-yellow-400;
+  @apply bg-white text-purple-900 font-bold rounded-md py-1.5 px-4 border-[3px] border-white hover:border-yellow-400 hover:text-yellow-400 Max670px:leading-none Max370px:text-sm Max370px:py-1 Max370px:px-1;
 }
 .btnActive {
   @apply text-yellow-400;

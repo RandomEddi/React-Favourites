@@ -22,7 +22,7 @@ const Item = (props) => {
         <p className='text-2xl font-bold mt-1 text-center max-w-[250px]'>{props.title}</p>
 
         </div>
-      <div className='flex justify-between text-4xl 670px:justify-center 670px:flex-col items-center'>
+      <div className='flex justify-between text-4xl 470px:justify-center 470px:flex-col items-center'>
         <div className='flex text-gray-700 select-none' id='ratings'>
           {ratingStars()}
           </div>

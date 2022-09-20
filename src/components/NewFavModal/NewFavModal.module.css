@@ -1,5 +1,5 @@
 .modalInput {
-  @apply border-black border-2 py-1 px-2 rounded-md outline-purple-900 text-gray-600;
+  @apply border-black border-2 py-1 px-2 rounded-md outline-purple-900 text-gray-600 ;
 }
 
 .modalLabel {
