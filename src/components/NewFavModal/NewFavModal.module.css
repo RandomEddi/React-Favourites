@@ -1,0 +1,39 @@
+.modalInput {
+  @apply border-black border-2 py-1 px-2 rounded-md outline-purple-900 text-gray-600;
+}
+
+.modalLabel {
+  @apply font-bold;
+};
+
+.modalLabelFile {
+  @apply font-bold cursor-pointer text-4xl text-purple-900 hover:after:content-['Click'] after:ml-3;
+}
+
+.modalInputFile {
+  @apply hidden;
+}
+
+.modalLabelUrl {
+  @apply font-bold text-4xl mb-3 text-purple-900;
+}
+
+.modalGroup {
+  @apply flex flex-col items-center justify-between gap-y-3;
+}
+
+.modalGroupUrl {
+  @apply flex flex-col gap-y-3;
+}
+
+.activeStar {
+  @apply text-yellow-400;
+}
+
+.invalidInput {
+  @apply border-2 border-red-700;
+}
+
+.fileActive {
+  @apply before:content-['✔'] before:text-yellow-400;
+}
