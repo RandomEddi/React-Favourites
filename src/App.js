@@ -7,15 +7,11 @@ import Notification from "./components/UI/Notification/Notification";
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDataFavourites } from "./store/favourites-action";
 import { uiActions } from "./store/slices/ui-slice";
-
-function Paragraph (props) {
-  return <p className="text-center text-7xl text-purple-900 mt-10 font-bold">{props.children}</p>
-}
+import Paragraph from "./components/UI/Paragraph/Paragraph";
 
 function App() {
   const dispatch = useDispatch()
   const [typeOfFavourites, setTypeOfFavourites] = useState('Movie')
-  const loading = useSelector(state => state.ui.loading)
   const favourites = useSelector(state => state.favourites.items)
   const typeChosed = (type) => {
     setTypeOfFavourites(type)
@@ -31,14 +27,14 @@ function App() {
       }))
     }, 2000)
   }, [dispatch])
-  console.log(favourites)
+
   return (
     <>
       <Notification />
       <Header onChangeTypes={typeChosed} />
-      {!loading && !isEmpty && <Main typeOfFavourites={typeOfFavourites} data={favourites}/>}
-      {loading && <Loading />}
-      {isEmpty && !loading && <Paragraph>Favourite is empty</Paragraph>}
+      {!isEmpty && <Main typeOfFavourites={typeOfFavourites} data={favourites}/>}
+      <Loading />
+      {isEmpty && <Paragraph>Favourite is empty</Paragraph>}
       <NewFavModal />
     </>
   );
