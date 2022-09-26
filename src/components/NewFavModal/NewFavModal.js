@@ -4,7 +4,7 @@ import Input from '../UI/Input/Input';
 import styles from './NewFavModal.module.css'
 import Button from '../UI/Button/Button'
 import useInput from '../../store/hooks/use-input';
-import { useDispatch } from 'react-redux' 
+import { useDispatch, useSelector } from 'react-redux' 
 import { uiActions } from '../../store/slices/ui-slice';
 import { addFavourite } from '../../store/favourites-action';
 
@@ -15,6 +15,7 @@ const NewFavModal = () => {
   const [ratingStars, setRatingStart] = useState(0)
   const typeOfFavourite = useRef()
   const rating = useRef()
+  const modalIsOpen = useSelector(state => state.ui.modalIsOpen)
   
   const {
     value: titleValue,
@@ -119,6 +120,7 @@ const NewFavModal = () => {
   
   return ReactDOM.createPortal(
     <>
+    {modalIsOpen && <>
       <div className='fixed inset-0 bg-black bg-opacity-40' onClick={() => dispatch(uiActions.onCloseModal())}></div>
       <div className='fixed left-1/3 top-[22%] w-1/3 h-[56%] Max670px:left-[20%] Max670px:w-[60%] Max670px:top-[10%]
       Max670px:h-[80%] Max370px:left-0 Max370px:w-full bg-white rounded-xl px-3'>
@@ -170,7 +172,8 @@ const NewFavModal = () => {
           <Button className="bg-purple-900 text-white font-bold rounded-md py-2.5 px-3 disabled:bg-gray-500" onClick={submitFormHandler} type='submit' disabled={!formValid}>Add new Favourite</Button>
         </form>
       </div>
-    </>,
+    </>}
+  </>,
     document.querySelector('#modal')
   )
 }
