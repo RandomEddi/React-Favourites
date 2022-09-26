@@ -1,6 +1,10 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteFavourite } from '../../../store/favourites-action'
+import { uiActions } from '../../../store/slices/ui-slice'
 
 const Item = (props) => {
+  const dispatch = useDispatch()
   const ratingStars = () => {
     let ratingArray = []
 
@@ -18,7 +22,7 @@ const Item = (props) => {
     <div className='flex flex-col items-center'>
       <div>
         <div className='flex flex-col items-center'>
-        <img className='w-[300px] h-[440px]' src={props.url}></img>
+        <img className='w-[300px] h-[440px]' alt='favourite' src={props.url}></img>
         <p className='text-2xl font-bold mt-1 text-center max-w-[250px]'>{props.title}</p>
 
         </div>
@@ -26,7 +30,16 @@ const Item = (props) => {
         <div className='flex text-gray-700 select-none' id='ratings'>
           {ratingStars()}
           </div>
-        <div className='cursor-pointer select-none' onClick={() => {props.onDelete(props.id)}}>&#128465;</div>
+        <div className='cursor-pointer select-none' onClick={() => {
+          dispatch(deleteFavourite(props.id))
+          setTimeout(() => {
+            dispatch(uiActions.setNotification({
+              status: "close",
+              title: "",
+              message: "",
+            }))
+          }, 2000)
+          }}>&#128465;</div>
       </div>
       </div>
     </div>

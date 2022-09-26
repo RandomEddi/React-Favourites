@@ -1,10 +1,10 @@
-import React, {useContext} from 'react'
 import Button from '../UI/Button/Button'
 import styles from './Header.module.css'
-import AddFavouriteContext from '../../store/context/add-favourite-context'
+import { uiActions } from '../../store/slices/ui-slice'
+import { useDispatch} from 'react-redux'
 
 const Header = (props) => {
-  const modalCtx = useContext(AddFavouriteContext)
+  const dispatch = useDispatch()
   const activeBtn = styles.btn + ' ' + styles.btnActive
 
   const btnTypeHandler = (e) => {
@@ -24,7 +24,9 @@ const Header = (props) => {
           <Button type='button' className={styles.btn} dataset='Serial' onClick={btnTypeHandler}>Serials</Button>
         </div>
         <div>
-          <Button type='button' className={styles.btn} onClick={modalCtx.modalOnOpenHandler}>Add Favourite</Button>
+          <Button type='button' className={styles.btn} onClick={() => {
+            dispatch(uiActions.onOpenModal())
+          }}>Add Favourite</Button>
         </div>
       </div>
     </header>

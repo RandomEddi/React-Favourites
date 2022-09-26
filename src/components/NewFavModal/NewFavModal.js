@@ -1,20 +1,20 @@
-import React, {useContext, useRef, useState} from 'react'
+import { useRef, useState} from 'react'
 import ReactDOM from 'react-dom';
-import AddFavouriteContext from '../../store/context/add-favourite-context';
 import Input from '../UI/Input/Input';
 import styles from './NewFavModal.module.css'
 import Button from '../UI/Button/Button'
 import useInput from '../../store/hooks/use-input';
-import axios from 'axios';
+import { useDispatch } from 'react-redux' 
+import { uiActions } from '../../store/slices/ui-slice';
+import { addFavourite } from '../../store/favourites-action';
 
-const url = 'https://react-favourites-default-rtdb.firebaseio.com/favourites.json'
 
 const NewFavModal = () => {
+  const dispatch = useDispatch()
   const [usingFile, setUsingFile] = useState(false)
   const [ratingStars, setRatingStart] = useState(0)
   const typeOfFavourite = useRef()
   const rating = useRef()
-  const modalIsOpen = useContext(AddFavouriteContext)
   
   const {
     value: titleValue,
@@ -35,7 +35,30 @@ const NewFavModal = () => {
   } = useInput(val => val.includes('.'))
   
   
+  
   const ratingHandler = (event) => {
+    
+    let ratingChildren = rating.current.children
+    let ended = false
+    setRatingStart(0)
+    Array.from(ratingChildren).forEach(child => child.classList.remove(styles.activeStar))
+
+    for (let node of ratingChildren) {
+      if (ended) {
+        break
+      }
+      if (event.target === node) {
+        ended = true
+      }
+      setRatingStart(prev => prev + 1)
+      node.classList.add(styles.activeStar)
+    }
+  }
+  const ratingOnPressHandler = (event) => {
+    if (event.code !== 'Space') {
+      return
+    }
+    event.preventDefault()
     let ratingChildren = rating.current.children
     let ended = false
     setRatingStart(0)
@@ -56,14 +79,6 @@ const NewFavModal = () => {
     setUsingFile(URL.createObjectURL(e.target.files[0]))
   }
 
-  const postRequest = () => {
-    axios.post(url, {
-      title: titleValue,
-      rating: ratingStars,
-      url: usingFile ? usingFile : urlValue,
-      type: typeOfFavourite.current.value,
-    })
-  }
   const submitFormHandler = (e) => {
     e.preventDefault()
 
@@ -71,11 +86,23 @@ const NewFavModal = () => {
       return
     }
     
-    postRequest()
+    dispatch(addFavourite({
+      title: titleValue,
+      rating: ratingStars,
+      url: usingFile ? usingFile : urlValue,
+      type: typeOfFavourite.current.value,
+    }))
     setUsingFile(false)
     resetTitleValue()
     resetUrlValue()
-    modalIsOpen.modalOnCloseHandler()
+    dispatch(uiActions.onCloseModal())
+    setTimeout(() => {
+      dispatch(uiActions.setNotification({
+        status: "close",
+        title: "",
+        message: "",
+      }))
+    }, 2000)
   }
   
   let titleInputClasses = !titleHasEror ? styles.modalInput : styles.modalInput + " " + styles.invalidInput
@@ -92,7 +119,7 @@ const NewFavModal = () => {
   
   return ReactDOM.createPortal(
     <>
-      {modalIsOpen.isModalOpen && <> <div className='fixed inset-0 bg-black bg-opacity-40' onClick={modalIsOpen.modalOnCloseHandler}></div>
+      <div className='fixed inset-0 bg-black bg-opacity-40' onClick={() => dispatch(uiActions.onCloseModal())}></div>
       <div className='fixed left-1/3 top-[22%] w-1/3 h-[56%] Max670px:left-[20%] Max670px:w-[60%] Max670px:top-[10%]
       Max670px:h-[80%] Max370px:left-0 Max370px:w-full bg-white rounded-xl px-3'>
         <form className='flex flex-col items-center justify-center h-full gap-y-2'>
@@ -110,12 +137,12 @@ const NewFavModal = () => {
             blurHandler={titleBlurHandler}
             />
           </div>
-          <div ref={rating} className='flex text-4xl text-gray-700 cursor-pointer select-none' onClick={ratingHandler}>
-            <div className=''>&#9733;</div>
-            <div className=''>&#9733;</div>
-            <div>&#9733;</div>
-            <div>&#9733;</div>
-            <div>&#9733;</div>
+          <div ref={rating} className='flex text-4xl text-gray-700 cursor-pointer select-none' onClick={ratingHandler} onKeyDown={ratingOnPressHandler}>
+            <div tabIndex='0' className=''>&#9733;</div>
+            <div tabIndex='0' className=''>&#9733;</div>
+            <div tabIndex='0'>&#9733;</div>
+            <div tabIndex='0'>&#9733;</div>
+            <div tabIndex='0'>&#9733;</div>
           </div>
           <div className="flex flex-col items-center mt-3">
             <div className=''>
@@ -143,7 +170,6 @@ const NewFavModal = () => {
           <Button className="bg-purple-900 text-white font-bold rounded-md py-2.5 px-3 disabled:bg-gray-500" onClick={submitFormHandler} type='submit' disabled={!formValid}>Add new Favourite</Button>
         </form>
       </div>
-      </>}
     </>,
     document.querySelector('#modal')
   )

@@ -1,70 +1,56 @@
 import Header from "./components/Header/Header";
 import NewFavModal from "./components/NewFavModal/NewFavModal";
 import Main from './components/Main/Main'
-import axios from "axios";
-import { useEffect, useState, useCallback, useContext } from "react";
+import { useEffect, useState } from "react";
 import Loading from './components/UI/Loading/Loading'
-import AddFavouriteContext from "./store/context/add-favourite-context";
-const url = 'https://react-favourites-default-rtdb.firebaseio.com/favourites'
+import Notification from "./components/UI/Notification/Notification";
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchDataFavourites } from "./store/favourites-action";
+import { uiActions } from "./store/slices/ui-slice";
+
+function Paragraph (props) {
+  return (<p className="text-center text-7xl text-purple-900 mt-10 font-bold">{props.children}</p>)
+}
+
+/* TODO
+* Notification 
+* obnovlenie
+*/
 
 function App() {
-  const ctxModal = useContext(AddFavouriteContext).isModalOpen
+  const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
-  const [favourites, setFavourites] = useState([])
-  const [error, setError] = useState(null)
-  const [isEmpty, setIsEmpty] = useState(false)
   const [typeOfFavourites, setTypeOfFavourites] = useState('Movie')
-  
+  const uiState = useSelector(state => state.ui)
+  const favourites = useSelector(state => state.favourites.items)
+  let isEmpty = favourites.length === 0
   const typeChosed = (type) => {
     setTypeOfFavourites(type)
   }
-  
-
-  const getRequest = useCallback(async () => {
-    setError(null)
+  useEffect(() => {
     setLoading(true)
-    setIsEmpty(false)
-    try {
-      const response = await axios.get(url + '.json')
-      const data = response.data
-      let loadedData = []
-
-      for (let item in data) {
-        if (data[item].type === typeOfFavourites) {
-          loadedData.push({
-            id: item,
-            title: data[item].title,
-            rating: data[item].rating,
-            url: data[item].url,
-          })
-        }
-      }
-      setFavourites(loadedData.sort((a, b) => b.rating - a.rating))
-      if (loadedData.length < 1) {
-        setIsEmpty(true)
-      } 
-    } catch (error) {
-      console.log('something went wrong')
-      setError(error)
-    }
+    dispatch(fetchDataFavourites(typeOfFavourites))
+    setTimeout(() => {
+      dispatch(uiActions.setNotification({
+        status: "close",
+        title: "",
+        message: "",
+      }))
+    }, 2000)
     setLoading(false)
-  }
-  , [typeOfFavourites])
-
-  useEffect(() => {getRequest()}, [getRequest])
-
-  const deleteHandler = (id) => {
-    axios.delete(url + '/' + id + '.json')
-  }
+  }, [typeOfFavourites, dispatch])
 
   return (
     <>
-    <Header onChangeTypes={typeChosed} />
-    {!loading && !error && !isEmpty && <Main data={favourites} onDelete={deleteHandler}/>}
-    {loading && <Loading />}
-    {error && <p className="text-center text-7xl text-purple-900 mt-10 font-bold">Something went wrong</p>}
-    {isEmpty && <p className="text-center text-7xl text-purple-900 mt-10 font-bold">Favourite is empty</p>}
-    <NewFavModal />
+      {!uiState.modalIsOpen && uiState.notification && <Notification 
+      title={uiState.notification.title} 
+      message={uiState.notification.message}
+      status={uiState.notification.status}/>}
+      <Header onChangeTypes={typeChosed} />
+      {!loading && !isEmpty && <Main data={favourites}/>}
+      {loading && <Loading />}
+      {isEmpty && <Paragraph>Favourite is empty</Paragraph>}
+      {uiState.modalIsOpen && <NewFavModal />}
     </>
   );
 }
