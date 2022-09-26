@@ -9,27 +9,20 @@ import { fetchDataFavourites } from "./store/favourites-action";
 import { uiActions } from "./store/slices/ui-slice";
 
 function Paragraph (props) {
-  return (<p className="text-center text-7xl text-purple-900 mt-10 font-bold">{props.children}</p>)
+  return <p className="text-center text-7xl text-purple-900 mt-10 font-bold">{props.children}</p>
 }
-
-/* TODO
-* Notification 
-* obnovlenie
-*/
 
 function App() {
   const dispatch = useDispatch()
-  const [loading, setLoading] = useState(false)
   const [typeOfFavourites, setTypeOfFavourites] = useState('Movie')
-  const uiState = useSelector(state => state.ui)
+  const loading = useSelector(state => state.ui.loading)
   const favourites = useSelector(state => state.favourites.items)
-  let isEmpty = favourites.length === 0
   const typeChosed = (type) => {
     setTypeOfFavourites(type)
   }
+  let isEmpty = favourites.length === 0
   useEffect(() => {
-    setLoading(true)
-    dispatch(fetchDataFavourites(typeOfFavourites))
+    dispatch(fetchDataFavourites())
     setTimeout(() => {
       dispatch(uiActions.setNotification({
         status: "close",
@@ -37,20 +30,16 @@ function App() {
         message: "",
       }))
     }, 2000)
-    setLoading(false)
-  }, [typeOfFavourites, dispatch])
-
+  }, [dispatch])
+  console.log(favourites)
   return (
     <>
-      {!uiState.modalIsOpen && uiState.notification && <Notification 
-      title={uiState.notification.title} 
-      message={uiState.notification.message}
-      status={uiState.notification.status}/>}
+      <Notification />
       <Header onChangeTypes={typeChosed} />
-      {!loading && !isEmpty && <Main data={favourites}/>}
+      {!loading && !isEmpty && <Main typeOfFavourites={typeOfFavourites} data={favourites}/>}
       {loading && <Loading />}
-      {isEmpty && <Paragraph>Favourite is empty</Paragraph>}
-      {uiState.modalIsOpen && <NewFavModal />}
+      {isEmpty && !loading && <Paragraph>Favourite is empty</Paragraph>}
+      <NewFavModal />
     </>
   );
 }
