@@ -2,23 +2,16 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   modalIsOpen: false,
-  notification: {
-    status: "error",
-    title: "Error...",
-    message: 'Something went wrong!'
-  },
+  notification: null,
+  loading: false,
 }
 
 const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-    onOpenModal(state) {
-      state.modalIsOpen = true
-    },
-    onCloseModal(state) {
-      state.modalIsOpen = false
-    },
+    onOpenModal(state) {state.modalIsOpen = true},
+    onCloseModal(state) {state.modalIsOpen = false},
     setNotification(state, action) {
       state.notification = {
         status: action.payload.status,        
@@ -26,9 +19,8 @@ const uiSlice = createSlice({
         message: action.payload.message,        
       }
     },
-    closeNotification(state) {
-      state.notification = null
-    }
+    setLoadingTrue(state) {state.loading = true},
+    setLoadingFalse(state) {state.loading = false},
   }
 })
 
