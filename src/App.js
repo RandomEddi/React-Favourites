@@ -17,6 +17,7 @@ function App() {
     setTypeOfFavourites(type)
   }
   let isEmpty = favourites.length === 0
+  
   useEffect(() => {
     dispatch(fetchDataFavourites())
     setTimeout(() => {
@@ -25,7 +26,7 @@ function App() {
         title: "",
         message: "",
       }))
-    }, 2000)
+    }, 1000)
   }, [dispatch])
 
   return (

@@ -76,6 +76,7 @@ const NewFavModal = () => {
       node.classList.add(styles.activeStar)
     }
   }
+  
   const fileHandler = (e) => {
     setUsingFile(URL.createObjectURL(e.target.files[0]))
   }
@@ -122,8 +123,7 @@ const NewFavModal = () => {
     <>
     {modalIsOpen && <>
       <div className='fixed inset-0 bg-black bg-opacity-40' onClick={() => dispatch(uiActions.onCloseModal())}></div>
-      <div className='fixed left-1/3 top-[22%] w-1/3 h-[56%] Max670px:left-[20%] Max670px:w-[60%] Max670px:top-[10%]
-      Max670px:h-[80%] Max370px:left-0 Max370px:w-full bg-white rounded-xl px-3'>
+      <div className='fixed left-1/3 top-[20%] w-1/3 h-[60%] Max670px:left-[20%] Max670px:w-[60%] Max370px:left-0 Max370px:w-full bg-white rounded-xl px-3'>
         <form className='flex flex-col items-center justify-center h-full gap-y-2'>
           <div className='flex flex-col gap-y-4 mt-4 mb-3'>
             <Input
