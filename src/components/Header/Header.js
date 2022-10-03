@@ -1,3 +1,4 @@
+import React from 'react'
 import Button from '../UI/Button/Button'
 import styles from './Header.module.css'
 import { uiActions } from '../../store/slices/ui-slice'
@@ -15,7 +16,6 @@ const Header = (props) => {
     } 
     
   }
-
   return (
     <header className='relative top-0 left-0 bg-purple-900 right-0 h-20 MaxLg:px-5'>
       <div className='container mx-auto flex justify-between items-center h-full'>
@@ -32,4 +32,4 @@ const Header = (props) => {
     </header>
   )
 }
-export default Header
+export default React.memo(Header)

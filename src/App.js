@@ -1,7 +1,7 @@
 import Header from "./components/Header/Header";
 import NewFavModal from "./components/NewFavModal/NewFavModal";
 import Main from './components/Main/Main'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Loading from './components/UI/Loading/Loading'
 import Notification from "./components/UI/Notification/Notification";
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,9 +13,11 @@ function App() {
   const dispatch = useDispatch()
   const [typeOfFavourites, setTypeOfFavourites] = useState('Movie')
   const favourites = useSelector(state => state.favourites.items)
-  const typeChosed = (type) => {
+
+  const typeChosed = useCallback((type) => {
     setTypeOfFavourites(type)
-  }
+  }, [])
+  
   let isEmpty = favourites.length === 0
   
   useEffect(() => {

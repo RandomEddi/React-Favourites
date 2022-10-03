@@ -18,7 +18,7 @@ const Notification = () => {
       cssClasses += " bg-white translate-y-10"
     }
   }
-  
+
   return (
     <>
     {notification && <div className={cssClasses} onClick={() => dispatch(uiActions.setNotification({
@@ -33,4 +33,4 @@ const Notification = () => {
     </>
   )
 }
-export default Notification
+export default React.memo(Notification)

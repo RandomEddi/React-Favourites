@@ -1,4 +1,4 @@
-import { useRef, useState} from 'react'
+import React,{ useRef, useState} from 'react'
 import ReactDOM from 'react-dom';
 import Input from '../UI/Input/Input';
 import styles from './NewFavModal.module.css'
@@ -110,7 +110,6 @@ const NewFavModal = () => {
   let titleInputClasses = !titleHasEror ? styles.modalInput : styles.modalInput + " " + styles.invalidInput
 
   let urlInputClasses = !urlHasEror ? styles.modalInput : styles.modalInput + " " + styles.invalidInput
-
   let filelabelClasses = !usingFile ? styles.modalLabelFile : styles.fileActive + ' ' + styles.modalLabelFile
 
   let formValid = false
@@ -178,4 +177,4 @@ const NewFavModal = () => {
   )
 }
 
-export default NewFavModal
+export default React.memo(NewFavModal)
