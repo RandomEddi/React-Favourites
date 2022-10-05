@@ -122,7 +122,7 @@ const NewFavModal = () => {
     <>
     {modalIsOpen && <>
       <div className='fixed inset-0 bg-black bg-opacity-40' onClick={() => dispatch(uiActions.onCloseModal())}></div>
-      <div className='fixed left-1/3 top-[20%] w-1/3 h-[60%] Max670px:left-[20%] Max670px:w-[60%] Max370px:left-0 Max370px:w-full bg-white rounded-xl px-3'>
+      <div className='fixed left-[40%] top-[20%] w-[20%] h-[60%] MaxXl:left-[35%] MaxXl:w-[30%] MaxLg:left-[31%] MaxLg:w-[38%] MaxSm:left-[22%] MaxSm:w-[56%] Max470px:left-[14%]  Max470px:w-[72%] Height840px:top-[10%] Height840px:h-[80%] Height630px:top-[4%] Height630px:h-[92%] bg-white rounded-xl px-3'>
         <form className='flex flex-col items-center justify-center h-full gap-y-2'>
           <div className='flex flex-col gap-y-4 mt-4 mb-3'>
             <Input

@@ -4,9 +4,9 @@ import { uiActions } from '../../../store/slices/ui-slice'
 
 const Notification = () => {
   const notification = useSelector(state => state.ui.notification)
-  let cssClasses = "fixed left-[40%] text-center flex flex-col z-50 px-6 py-3 rounded-md transition duration-200"
   const dispatch = useDispatch()
   
+  let cssClasses = "fixed left-[40%] MaxSm:left-[4%] text-center flex flex-col z-50 px-6 py-3 rounded-md transition duration-200"
   if (notification) {
     if (notification.status === 'error') {
       cssClasses += " bg-red-500 translate-y-10"
