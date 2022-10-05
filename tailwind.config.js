@@ -4,12 +4,14 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        '470px': {'max': '470px'},
-        'Max670px': {'max': "670px"},
-        'Max370px': {'max': "370px"},
         'MaxXl': {'max': '1280px'},
         'MaxLg': {'max': '1024px'},
         'MaxSm': {'max': '700px'},
+        'Max670px': {'max': "670px"},
+        'Max470px': {'max': '470px'},
+        'Max370px': {'max': "370px"},
+        'Height840px': {'raw': '(max-height: 840px)'},
+        'Height630px': {'raw': '(max-height: 630px)'}
       },
     },
   },
