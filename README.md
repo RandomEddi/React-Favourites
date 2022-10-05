@@ -1,5 +1,7 @@
 ## Favourites of movies and serials (react, redux toolkit, axios, tailwind)
 
+[URL](https://react-favourites.web.app/)
+
 
 ### `npm start`
 
